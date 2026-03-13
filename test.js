@@ -196,6 +196,8 @@ describe('getAIIssues', () => {
               content: JSON.stringify({
                 issues: [
                   { title: 'Good', body: 'ok', labels: [] },
+                  null,
+                  "text",
                   { body: 'no title', labels: [] },
                 ],
               }),

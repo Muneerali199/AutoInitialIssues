@@ -116,6 +116,10 @@ Please generate the issues JSON array.
 
     // Filter to only well-formed issue objects
     const validIssues = resultObj.issues.filter((issue, i) => {
+      if (!issue || typeof issue !== 'object') {
+        core.warning(`Issue at index ${i} is not an object, skipping.`);
+        return false;
+      }
       if (typeof issue.title !== 'string' || !issue.title.trim()) {
         core.warning(`Issue at index ${i} is missing a valid "title", skipping.`);
         return false;

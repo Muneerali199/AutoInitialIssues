@@ -14,7 +14,7 @@ async function createIssues(token, issues, labelPrefix) {
   
   for (const issue of issues) {
     try {
-      if (!issue.title || typeof issue.title !== 'string') {
+      if (!issue || typeof issue !== 'object' || typeof issue.title !== 'string' || !issue.title.trim()) {
         core.warning(`Skipping issue with invalid or missing title: ${JSON.stringify(issue)}`);
         continue;
     }
@@ -35,7 +35,10 @@ async function createIssues(token, issues, labelPrefix) {
       });
       core.info(`Created issue: ${issue.title}`);
     } catch (error) {
-      core.warning(`Failed to create issue "${issue.title}": ${error.message}`);
+      const safeTitle = issue && typeof issue === 'object' && typeof issue.title === 'string'
+        ? issue.title
+        : '<invalid issue>';
+      core.warning(`Failed to create issue "${safeTitle}": ${error.message}`);
     }
   }
 }
